@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import './Signup.css'
+import axios from 'axios'
 
 function Signup() {
   const [form, setForm] = useState({
@@ -16,9 +17,15 @@ function Signup() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Add validation and submit logic here
+
+    try {
+      const res = await axios.post('http://localhost:5000/api/signup', form)
+      alert(res.data.message)
+    } catch (err) {
+      alert(err.response?.data?.message || 'Something went wrong')
+    }
   }
 
   return (
@@ -56,7 +63,8 @@ function Signup() {
         <button type="submit" className="signup-btn">Sign Up</button>
         <div className="login-link">
           <span>Already have an account?</span>
-          <a href="#">Login</a>
+          
+          <a href="/login">Login</a>
         </div>
       </form>
     </div>
